@@ -1,0 +1,154 @@
+---
+title: "Threeway summary tables"
+author: "Gitte S Brix"
+date: "2023-08-24"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+```
+
+
+## Agenda
+
+- But why?
+- The setup
+- The pre-requisites
+- The goal
+- The code
+- The result
+
+## But why?
+
+1. I don't know how to make a package
+2. I want to learn
+3. But mostly...
+
+
+## ... here's why:
+
+
+![ ](https://media.giphy.com/media/fQZX2aoRC1Tqw/giphy.gif){width="100%"}
+
+
+Make me a table!
+
+## The setup - GitHub
+
+Create a new repository | Clone SSH key
+- | -
+![alt](/Users/gitte/Desktop/newrep.png){width="100%"} | ![alt](/Users/gitte/Desktop/clone.png){width="100%"}
+
+
+## The setup - RStudio
+
+
+
+Run the code | Save helper-script in folder 
+- | -
+![alt](/Users/gitte/Desktop/setuperror.png){width="90%"} | ![alt](/Users/gitte/Desktop/setupdest.png){width="100%"} 
+Delete helper-script from folder | Remember the roxygen
+![alt](/Users/gitte/Desktop/setupdel.png){width="100%"} | ![alt](/Users/gitte/Desktop/roxygen.png){width=90%}
+
+
+## The pre-requisites
+
+```{r prerequisites, echo = TRUE}
+
+#' @importFrom reshape2 acast
+#' @import dplyr
+
+```
+
+
+
+Why not all of tidyverse?
+
+## The goal
+
+![ ](/Users/gitte/Desktop/tablexample.png){width="100%"}
+  
+## The goal         
+What dplyr produces:
+
+![ ](/Users/gitte/Desktop/groupby.png){width="100%"}
+
+## The code - documentation
+
+
+```{r code, echo = T}
+
+#' meantable()
+#'
+#' @param x 
+#' @param colvar 
+#' @param rowvar 
+#' @param statvar 
+#'
+#' @return a table
+#' @export
+#'
+#' @examples meantable(fl, origin, carrier, air_time)
+#' 
+#' @importFrom reshape2 acast
+#' @import dplyr
+
+```
+
+## The code - down to business
+
+```{r code2, echo = T}
+
+meantable <- function(x, colvar, rowvar, statvar) {
+  df <- x %>% 
+    group_by({{colvar}}, {{rowvar}}) %>% 
+    summarise(avg_statvar = mean({{statvar}}, 
+                                 na.rm = TRUE), .groups = "drop")
+  array <- acast(df, df[[1]] ~ df[[2]], value.var = "avg_statvar")
+  as.table(array)
+}
+
+```
+
+Notice the double curly brackets for dplyr-code and citation marks with reshape2!
+
+**"var"** >>> **{{var}}**
+
+## The code - down to business
+
+```{r code 3, echo = T}
+
+mediantable <- function(x, colvar, rowvar, statvar) {
+  df <- x %>% 
+    group_by({{colvar}}, {{rowvar}}) %>% 
+    summarise(median_statvar = median({{statvar}}, na.rm = TRUE), .groups = "drop")
+  array <- acast(df, df[[1]] ~ df[[2]], value.var = "median_statvar")
+  as.table(array)
+}
+```
+
+## The result
+
+```{r package, echo = T, warning = F, error = F, message = F}
+
+library(project)
+library(kableExtra)
+
+
+```
+
+tab <- mediantable(fl, carrier, origin, air_time)
+
+tab %>% 
+  kbl(caption = "Mean air time for each unique combination of carrier and origin of flight") %>% 
+  kable_classic(full_width = T, html_font = "Cambria")
+
+
+## The result
+
+![ ](/Users/gitte/Documents/PhD/R kursus/mediantable.png){width="100%"}
+
+
+
