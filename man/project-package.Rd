@@ -4,12 +4,12 @@
 \name{project-package}
 \alias{project}
 \alias{project-package}
-\title{project: What the Package Does (One Line, Title Case)}
+\title{project: Threeway summary tables}
 \description{
-What the package does (one paragraph).
+This package makes it easy to present summary statistics of one variable grouped by two other variables.
 }
 \author{
-\strong{Maintainer}: First Last \email{first.last@example.com} (\href{https://orcid.org/YOUR-ORCID-ID}{ORCID})
+\strong{Maintainer}: Gitte S Brix \email{gittbi@rm.dk} (\href{https://orcid.org/0000-0002-7426-2818}{ORCID})
 
 }
 \keyword{internal}

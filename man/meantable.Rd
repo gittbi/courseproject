@@ -2,7 +2,7 @@
 % Please edit documentation in R/meantable.R
 \name{meantable}
 \alias{meantable}
-\title{Title}
+\title{meantable()}
 \usage{
 meantable(x, colvar, rowvar, statvar)
 }
@@ -15,6 +15,13 @@ meantable(x, colvar, rowvar, statvar)
 
 \item{statvar}{}
 }
+\value{
+a table
+}
 \description{
-Title
+meantable()
+}
+\examples{
+meantable(fl, origin, carrier, air_time)
+
 }
